@@ -1,0 +1,498 @@
+/* =========================================
+   JULIA BETH BLOG STYLES (style.css)
+   ========================================= */
+
+:root {
+    --bg-color: #050505;
+    --text-main: #e0e0e0;
+    --text-muted: #888888;
+    --accent-glow: rgba(255, 255, 255, 0.15);
+    --glass-bg: rgba(20, 20, 20, 0.75); /* Slightly darker for better contrast */
+    --glass-border: rgba(255, 255, 255, 0.1);
+    
+    --font-headers: 'Bodoni Moda', serif; /* Simulating "The Seasons" */
+    --font-quote: 'Lancelot', serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* --- Scrollbar Customization --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #000;
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out forwards;
+    opacity: 0; /* JS will trigger this */
+}
+
+/* --- Layout Grid --- */
+.container {
+    display: grid;
+    grid-template-columns: 250px 1fr; /* Sidebar + Main Content */
+    min-height: 100vh;
+}
+
+/* --- Floating Sidebar --- */
+.sidebar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+    width: 220px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 100;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+    /* New Design Additions */
+    background-image: linear-gradient(to bottom right, rgba(255,255,255,0.03), transparent);
+}
+
+/* Decorative inner border for Sidebar */
+.sidebar::after {
+    content: '';
+    position: absolute;
+    top: 10px; left: 10px; right: 10px; bottom: 10px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Decorative top line in Sidebar */
+.sidebar-header {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-family: var(--font-headers);
+    font-size: 1.1rem;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 0;
+    position: relative;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    transform: translateX(5px);
+}
+
+/* Small indicator dot for active links */
+.nav-links a.active::before {
+    content: '•';
+    position: absolute;
+    left: -15px;
+    color: white;
+}
+
+/* --- Main Content Area --- */
+.main-content {
+    grid-column: 2;
+    padding: 0;
+    position: relative;
+}
+
+/* --- Background Images Logic --- */
+.section-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.25; /* Adjust opacity to make text readable */
+    pointer-events: none;
+    filter: grayscale(100%) contrast(1.2); /* Black and white aesthetic */
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 100%);
+}
+
+/* --- Hero Section (Top Part Black) --- */
+.hero {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: black;
+    overflow: hidden;
+}
+
+.bg-fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+    mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, transparent 100%);
+    z-index: 0;
+}
+
+.hero-text {
+    position: relative;
+    z-index: 2;
+}
+
+.title-name {
+    font-family: var(--font-headers);
+    font-size: 5rem;
+    font-weight: 400;
+    letter-spacing: -2px;
+    color: white;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 20px rgba(255,255,255,0.2);
+    animation: fadeIn 1.5s ease-out;
+}
+
+.quote-text {
+    font-family: var(--font-quote);
+    font-size: 1.8rem;
+    color: #ccc;
+    font-style: italic;
+    margin-top: 10px;
+    animation: fadeIn 2s ease-out;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* --- Content Sections --- */
+section {
+    padding: 80px 40px;
+    min-height: 80vh;
+    border-bottom: 1px solid #111;
+    position: relative; /* Essential for absolute background images */
+    overflow: hidden; /* Keeps background inside */
+}
+
+/* Ensure content sits on top of background images */
+.section-content-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+h2.section-title {
+    font-family: var(--font-headers);
+    font-size: 3rem;
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+h2.section-title::after {
+    content: '✧';
+    display: block;
+    font-size: 1.5rem;
+    margin-top: 10px;
+    color: var(--text-muted);
+}
+
+/* --- NEW CSS FOR BLOG CATEGORIES --- */
+.blog-category {
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 2;
+}
+
+.category-title {
+    font-family: var(--font-headers);
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: inline-block;
+}
+
+/* --- Diary / Blog Cards --- */
+.diary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.glass-card {
+    background: rgba(10, 10, 10, 0.7); /* Darker background for legibility over images */
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(5px);
+    padding: 25px;
+    border-radius: 2px;
+    transition: 0.4s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-card:hover {
+    background: rgba(30, 30, 30, 0.8);
+    transform: translateY(-5px);
+    border-color: rgba(255,255,255,0.3);
+    box-shadow: 0 0 20px rgba(255,255,255,0.05);
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transition: 0.5s;
+}
+
+.glass-card:hover::before {
+    left: 100%;
+}
+
+.date {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.entry-title {
+    font-family: var(--font-headers);
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+/* --- Music Section --- */
+.music-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.custom-player {
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid #333;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-radius: 50px;
+}
+
+.disk {
+    width: 50px;
+    height: 50px;
+    background: #222;
+    border-radius: 50%;
+    border: 1px solid #444;
+    animation: float 3s infinite ease-in-out;
+}
+
+.song-info h4 { font-family: var(--font-headers); }
+.song-info span { font-size: 0.8rem; color: #888; }
+
+.spotify-embed {
+    width: 100%;
+    max-width: 600px;
+    height: 152px;
+    border-radius: 12px;
+    opacity: 0.9;
+    transition: 0.3s;
+    position: relative;
+    z-index: 2;
+}
+.spotify-embed:hover { opacity: 1; }
+
+/* --- Photo Gallery --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.frame-item {
+    border: 6px solid #1a1a1a;
+    background: #fff;
+    padding: 6px 6px 25px 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    transition: 0.3s;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.frame-item:hover {
+    transform: scale(1.1) rotate(2deg);
+    z-index: 20;
+    border-color: #333;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+.frame-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: 0.4s;
+}
+
+.frame-item:hover img {
+    filter: grayscale(0%);
+}
+
+/* --- About Section --- */
+.about-layout {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    padding: 40px;
+    border: 1px solid #333;
+    position: relative;
+    z-index: 2;
+}
+
+.pfp-container {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    flex-shrink: 0;
+}
+
+.pfp {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid #444;
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    color: #bbb;
+    margin-bottom: 15px;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 900px) {
+    .container { grid-template-columns: 1fr; }
+    
+    .sidebar {
+        top: auto; left: 0; bottom: 0;
+        width: 100%;
+        height: 70px;
+        flex-direction: row;
+        padding: 10px 20px;
+        border-radius: 0;
+        border-top: 1px solid #333;
+        background: rgba(0,0,0,0.9);
+        /* Remove sidebar effects on mobile */
+        background-image: none;
+        box-shadow: none;
+    }
+    
+    .sidebar::after { display: none; }
+    .sidebar-header { border-bottom: none; margin-bottom: 0; padding-bottom: 0; display: none;}
+
+    .nav-links {
+        flex-direction: row;
+        margin-top: 0;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .nav-links a span { display: none; }
+    
+    .sidebar h3 { display: none; }
+
+    .main-content { margin-bottom: 70px; }
+    
+    .title-name { font-size: 3rem; }
+    .gallery-grid { column-count: 1; }
+    
+    .about-layout { flex-direction: column; text-align: center; }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
